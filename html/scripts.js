@@ -1,5 +1,3 @@
-var prices = {}
-var maxes = {}
 var zone = null
 
 // Partial Functions
@@ -24,8 +22,6 @@ window.addEventListener('message', function (event) {
 	if (item.message == "show") {
 		if (item.clear == true){
 			$( ".home" ).empty();
-			prices = {}
-			maxes = {}
 			zone = null
 		}
 		openMain();
@@ -38,62 +34,41 @@ window.addEventListener('message', function (event) {
 	if (item.message == "add"){
 		$( ".home" ).append('<div class="card">' +
 					'<div class="image-holder">' +
-						'<img src="img/' + item.item + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' + 
+						'<img src="nui://esx_inventoryhud/html/img/items/' + item.name + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' + 
 					'</div>' +
 					'<div class="container">' + 
-						'<h4><b>' + item.label + '<div class="price">' + item.price + '€' + '</div>' + '</b></h4> ' +
+						'<h4><b>' + item.label_fa + '</b></h4> ' +
+						'<div class="price" data-price="' + item.price + '" data-maxamount="' + item.maxcount + '">' + item.price + '$' + '</div>' +
 						'<div class="quantity">' + 
-							'<div class="minus-btn btnquantity" name="' + item.item + '" id="minus">' + 
-								'<img src="img/minus.png" alt="" />' + 
-							'</div>' +
-							'<div class="number" name="name">1</div>' + 
-							'<div class="plus-btn btnquantity" name="' + item.item + '" id="plus">' + 
-								'<img src="img/plus.png" alt="" />' + 
-							'</div>' +
+							'<input name="number" type="range" min="1" max="' + item.maxcount + '" class="amount_buy">' +
 						'</div>' +
 						'<div class="purchase">' + 
-							
-							'<div class="buy" name="' + item.item + '">Buy</div>' + 
+							'<div class="buy" name="' + item.name + '">خرید 1 عدد</div>' + 
 						'</div>' +
 					'</div>' +
 				'</div>');
-		prices[item.item] = item.price;
-		maxes[item.item] = item.max;
+		
+		$('.amount_buy').val('1');
 		zone = item.loc;
 	}
 });
 
-$(".home").on("click", ".btnquantity", function() {
-	
-	var $button = $(this);
-	var $name = $button.attr('name')
-	var oldValue = $button.parent().find(".number").text();
-	if ($button.get(0).id == "plus") {
-		if (oldValue <  maxes[$name]){
-			var newVal = parseFloat(oldValue) + 1;
-		}else{
-			var newVal = parseFloat(oldValue);
-		}
-	} else {
-	// Don't allow decrementing below zero
-		if (oldValue > 1) {
-			var newVal = parseFloat(oldValue) - 1;
-		} else {
-			newVal = 1;
-		}
-	}
-	$button.parent().parent().find(".price").text((prices[$name] * newVal) + "$");
-	$button.parent().find(".number").text(newVal);
-
+$(".home").on('input', '.amount_buy', function() {
+	var AmountRange = $(this);
+	var amount = AmountRange.val();
+	var paybtn = AmountRange.parent().parent().find(".purchase").find(".buy");
+	var price = AmountRange.parent().parent().find(".price").data("price");
+	paybtn.html("خرید " + amount + " عدد");
+	AmountRange.parent().parent().find(".price").text((price * amount) + "$");
 });
 
 $(".home").on("click", ".buy", function() {
-	var $button = $(this);
-	var $name = $button.attr('name')
-	var $count = parseFloat($button.parent().parent().find(".number").text());
+	var btnQuan = $(this);
+	var itemName = btnQuan.attr('name')
+	var ItemCount = parseFloat(btnQuan.parent().parent().find(".amount_buy").val());
 	$.post('http://esx_shops/purchase', JSON.stringify({
-		item: $name,
-		count: $count,
+		item: itemName,
+		count: ItemCount,
 		loc: zone
 	}));
 });

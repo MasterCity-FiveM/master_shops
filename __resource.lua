@@ -10,12 +10,8 @@ files {
 	'html/styles.css',
 	'html/scripts.js',
 	'html/debounce.min.js',
-	'html/iransans.otf',
-
 	-- default
-	'html/img/default.png',	
-    'html/img/bread.png',
-    'html/img/water.png',
+	'html/img/default.png',
 	'html/img/close.png',
 	'html/img/plus.png',
 	'html/img/minus.png'
@@ -25,14 +21,8 @@ ui_page 'html/ui.html'
 
 client_scripts {
 	'@es_extended/locale.lua',
-	'locales/de.lua',
-	'locales/br.lua',
+	'@esx_inventoryhud/html/img/items/*',
 	'locales/en.lua',
-	'locales/fi.lua',
-	'locales/fr.lua',
-	'locales/es.lua',
-	'locales/sv.lua',
-	'locales/pl.lua',
 	'config.lua',
 	'client/main.lua'
 }
@@ -40,14 +30,7 @@ client_scripts {
 server_scripts {
 	'@es_extended/locale.lua',
 	'@mysql-async/lib/MySQL.lua',
-	'locales/de.lua',
-	'locales/br.lua',
 	'locales/en.lua',
-	'locales/fi.lua',
-	'locales/fr.lua',
-	'locales/es.lua',
-	'locales/sv.lua',
-	'locales/pl.lua',
 	'config.lua',
 	'server/main.lua'
 }

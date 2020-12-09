@@ -22,71 +22,21 @@ Citizen.CreateThread(function()
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
-
-	Citizen.Wait(5000)
-	PlayerData = ESX.GetPlayerData()
-
-	ESX.TriggerServerCallback('esx_shops:requestDBItems', function(ShopItems)
-		for k,v in pairs(ShopItems) do
-			if (Config.Zones[k] ~= nil) then
-				Config.Zones[k].Items = v
-			end
-		end
-	end)
 end)
 
---[[ 
-function OpenShopMenu(zone) -- If you want the ESX_SuperMarket feature let this commented
-	local elements = {}
-	for i=1, #Config.Zones[zone].Items, 1 do
-		local item = Config.Zones[zone].Items[i]
-
-		table.insert(elements, {
-			label      = ('%s - <span style="color:green;">%s</span>'):format(item.label, _U('shop_item', ESX.Math.GroupDigits(item.price))),
-			label_real = item.label,
-			item       = item.item,
-			price      = item.price,
-
-			-- menu properties
-			value      = 1,
-			type       = 'slider',
-			min        = 1,
-			max        = 100,
-		})
+function OpenShopMenu(zone)
+	if Config.Zones[zone].Items[1] ~= nil then
+		OpenFinalShopMenu(zone)
+	else
+		ESX.TriggerServerCallback('esx_shop:requestDBItems', function(ShopItems)
+			Config.Zones[zone].Items = ShopItems
+			OpenFinalShopMenu(zone)
+		end, zone)
 	end
-
-	ESX.UI.Menu.CloseAll()
-	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'shop', {
-		title    = _U('shop'),
-		align    = 'bottom-right',
-		elements = elements
-	}, function(data, menu)
-		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'shop_confirm', {
-			title    = _U('shop_confirm', data.current.value, data.current.label_real, ESX.Math.GroupDigits(data.current.price * data.current.value)),
-			align    = 'bottom-right',
-			elements = {
-				{label = _U('no'),  value = 'no'},
-				{label = _U('yes'), value = 'yes'}
-			}
-		}, function(data2, menu2)
-			if data2.current.value == 'yes' then
-				TriggerServerEvent('esx_shops:buyItem', data.current.item, data.current.value, zone)
-			end
-
-			menu2.close()
-		end, function(data2, menu2)
-			menu2.close()
-		end)
-	end, function(data, menu)
-		menu.close()
-
-		CurrentAction     = 'shop_menu'
-		CurrentActionMsg  = _U('press_menu')
-		CurrentActionData = {zone = zone}
-	end)
 end
---]]
-function OpenShopMenu(zone) -- If you don't want the ESX_SuperMarket feature comment out this function
+
+
+function OpenFinalShopMenu(zone) -- If you don't want the ESX_SuperMarket feature comment out this function
 	PlayerData = ESX.GetPlayerData()
 	
 	SendNUIMessage({
@@ -100,11 +50,11 @@ function OpenShopMenu(zone) -- If you don't want the ESX_SuperMarket feature com
 
 		SendNUIMessage({
 			message		= "add",
-			item		= item.item,
+			name		= item.name,
 			label      	= item.label,
-			item       	= item.item,
+			label_fa  	= item.label_fa,
 			price      	= item.price,
-			max        	= item.weight,
+			maxcount  	= item.maxamount,
 			loc		= zone
 		})
 
@@ -113,7 +63,43 @@ function OpenShopMenu(zone) -- If you don't want the ESX_SuperMarket feature com
 	ESX.SetTimeout(200, function()
 		SetNuiFocus(true, true)
 	end)
+end
 
+function OpenFinalShopMenuDef(zone)
+	local elements = {}
+	
+	for i=1, #Config.Zones[zone].Items, 1 do
+
+		local item = Config.Zones[zone].Items[i]
+
+		table.insert(elements, {
+			label     = item.label .. ' - <span style="color:green;">$' .. item.price .. ' </span>',
+			realLabel = item.label,
+			value     = item.name,
+			price     = item.price
+		})
+
+	end
+
+	ESX.UI.Menu.CloseAll()
+
+	ESX.UI.Menu.Open(
+		'default', GetCurrentResourceName(), 'shop',
+		{
+			title  = _U('shop'),
+			align = 'center',
+			elements = elements
+		},
+		function(data, menu)
+			TriggerServerEvent('esx_shop:buyItem', data.current.value, 1, data.current.price)
+		end,
+		function(data, menu)
+			menu.close()
+			CurrentAction     = 'shop_menu'
+			CurrentActionMsg  = _U('press_menu')
+			CurrentActionData = {zone = zone}
+		end
+	)
 end
 
 AddEventHandler('esx_shops:hasEnteredMarker', function(zone)
@@ -191,29 +177,7 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
---[[
--- Key Controls -- If you want the ESX_SuperMarket let this commented
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(0)
 
-		if CurrentAction ~= nil then
-			ESX.ShowHelpNotification(CurrentActionMsg)
-
-			if IsControlJustReleased(0, Keys['E']) then
-				if CurrentAction == 'shop_menu' then
-					OpenShopMenu(CurrentActionData.zone)
-				end
-
-				CurrentAction = nil
-			end
-		else
-			Citizen.Wait(500)
-		end
-	end
-end)
---]]
--- Key Controls -- If you don't want the ESX_SuperMarket feature uncomment this entire fuction
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(10)
@@ -233,7 +197,7 @@ Citizen.CreateThread(function()
 				CurrentAction = nil
 			elseif IsControlJustReleased (0, 44) then
 				ESX.SetTimeout(200, function()
-					SetNuiFocus(false, false)
+					closeGui()
 				end)	
 			end
 
