@@ -29,7 +29,8 @@ Config.Map = {
   {name="Shop",color=2, id=52,x =1163.373, y =-323.801, z =68.205},
   {name="Shop",color=2, id=52,x =-707.501, y =-914.260, z =18.215},
   {name="Shop",color=2, id=52,x =-1820.523, y =792.518, z =137.118},
-  {name="Shop",color=2, id=52,x =1698.388, y =4924.404, z =41.063}
+  {name="Shop",color=2, id=52,x =1698.388, y =4924.404, z =41.063},
+  {name="Digital Shop",color=37, id=521,x =-657.5472, y =-857.0374, z =24.49451}
 }
 
 Config.Zones = {
@@ -85,7 +86,14 @@ Config.Zones = {
         Items = {beer, wine, vodka, tequila, whisky, cigarett, lighter},
         Pos = {
             {x = -1586.922,   y = -3012.860, z = -77.004}, --Upstairs
-	    {x = -1578.204,   y = -3014.460, z = -80.005}  --Downstairs
+			{x = -1578.204,   y = -3014.460, z = -80.005}  --Downstairs
+        }
+    },
+	
+    DigitalShop = {
+        Items = {phone},
+        Pos = {
+            {x = -657.5472,   y = -857.0374, z = 23.49451}
         }
     }
 }
