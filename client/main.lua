@@ -132,11 +132,13 @@ Citizen.CreateThread(function()
 
 end)
 
--- Display markers
+-- Enter / Exit marker events
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
-		local coords = GetEntityCoords(PlayerPedId())
+		local coords      = GetEntityCoords(GetPlayerPed(-1))
+		local isInMarker  = false
+		local currentZone = nil
 
 		for k,v in pairs(Config.Zones) do
 			for i = 1, #v.Pos, 1 do
@@ -144,22 +146,8 @@ Citizen.CreateThread(function()
 				if distance < Config.DrawDistance then	
 					DrawMarker(Config.Type, v.Pos[i].x, v.Pos[i].y, v.Pos[i].z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Size.x, Config.Size.y, Config.Size.z, Config.Color.r, Config.Color.g, Config.Color.b, 100, false, true, 2, false, false, false, false)
 				end
-			end
-		end
-	end
-end)
-
--- Enter / Exit marker events
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(10)
-		local coords      = GetEntityCoords(GetPlayerPed(-1))
-		local isInMarker  = false
-		local currentZone = nil
-
-		for k,v in pairs(Config.Zones) do
-			for i = 1, #v.Pos, 1 do
-				if(GetDistanceBetweenCoords(coords, v.Pos[i].x, v.Pos[i].y, v.Pos[i].z, true) < Config.Size.x) then
+				
+				if(distance < Config.Size.x) then
 					isInMarker  = true
 					ShopItems   = v.Items
 					currentZone = k
@@ -167,10 +155,12 @@ Citizen.CreateThread(function()
 				end
 			end
 		end
+		
 		if isInMarker and not HasAlreadyEnteredMarker then
 			HasAlreadyEnteredMarker = true
 			TriggerEvent('esx_shops:hasEnteredMarker', currentZone)
 		end
+		
 		if not isInMarker and HasAlreadyEnteredMarker then
 			HasAlreadyEnteredMarker = false
 			TriggerEvent('esx_shops:hasExitedMarker', LastZone)
@@ -180,29 +170,22 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(10)
-
+		Citizen.Wait(0)
 		if CurrentAction ~= nil then
-
 			SetTextComponentFormat('STRING')
 			AddTextComponentString(CurrentActionMsg)
 			DisplayHelpTextFromStringLabel(0, 0, 1, -1)
-
 			if IsControlJustReleased(0, 38) then
-
 				if CurrentAction == 'shop_menu' then
 					OpenShopMenu(CurrentActionData.zone)
 				end
-
+				
 				CurrentAction = nil
 			elseif IsControlJustReleased (0, 44) then
 				ESX.SetTimeout(200, function()
 					closeGui()
 				end)	
 			end
-
-		else
-			Citizen.Wait(500)
 		end
 	end
 end)
