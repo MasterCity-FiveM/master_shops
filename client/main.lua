@@ -106,6 +106,8 @@ AddEventHandler('esx_shops:hasEnteredMarker', function(zone)
 	CurrentAction     = 'shop_menu'
 	CurrentActionMsg  = _U('press_menu')
 	CurrentActionData = {zone = zone}
+	
+	exports.pNotify:SendNotification({text = CurrentActionMsg, type = "info", timeout = 3000})
 end)
 
 AddEventHandler('esx_shops:hasExitedMarker', function(zone)
@@ -115,7 +117,6 @@ end)
 
 -- Create Blips
 Citizen.CreateThread(function()
-	
 	for i=1, #Config.Map, 1 do
 		
 		local blip = AddBlipForCoord(Config.Map[i].x, Config.Map[i].y, Config.Map[i].z)
@@ -129,22 +130,23 @@ Citizen.CreateThread(function()
 		AddTextComponentString(Config.Map[i].name)
 		EndTextCommandSetBlipName(blip)
 	end
-
 end)
 
 -- Enter / Exit marker events
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
+		Citizen.Wait(1)
 		local coords      = GetEntityCoords(GetPlayerPed(-1))
 		local isInMarker  = false
 		local currentZone = nil
-
+		local letSleep = true
+		
 		for k,v in pairs(Config.Zones) do
 			for i = 1, #v.Pos, 1 do
 				local distance = GetDistanceBetweenCoords(coords, v.Pos[i].x, v.Pos[i].y, v.Pos[i].z, true)
 				if distance < Config.DrawDistance then	
 					DrawMarker(Config.Type, v.Pos[i].x, v.Pos[i].y, v.Pos[i].z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Size.x, Config.Size.y, Config.Size.z, Config.Color.r, Config.Color.g, Config.Color.b, 100, false, true, 2, false, false, false, false)
+					letSleep = false
 				end
 				
 				if(distance < Config.Size.x) then
@@ -165,28 +167,27 @@ Citizen.CreateThread(function()
 			HasAlreadyEnteredMarker = false
 			TriggerEvent('esx_shops:hasExitedMarker', LastZone)
 		end
+		
+		if letSleep then
+			Citizen.Wait(2000)
+		end
 	end
 end)
 
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(0)
-		if CurrentAction ~= nil then
-			SetTextComponentFormat('STRING')
-			AddTextComponentString(CurrentActionMsg)
-			DisplayHelpTextFromStringLabel(0, 0, 1, -1)
-			if IsControlJustReleased(0, 38) then
-				if CurrentAction == 'shop_menu' then
-					OpenShopMenu(CurrentActionData.zone)
-				end
-				
-				CurrentAction = nil
-			elseif IsControlJustReleased (0, 44) then
-				ESX.SetTimeout(200, function()
-					closeGui()
-				end)	
-			end
-		end
+RegisterNetEvent('master_keymap:e')
+AddEventHandler('master_keymap:e', function() 
+	if CurrentAction ~= nil then
+		OpenShopMenu(CurrentActionData.zone)
+		CurrentAction = nil
+	end
+end)
+
+RegisterNetEvent('master_keymap:q')
+AddEventHandler('master_keymap:q', function() 
+	if CurrentAction ~= nil then
+		ESX.SetTimeout(200, function()
+			closeGui()
+		end)
 	end
 end)
 
