@@ -1,11 +1,11 @@
-Locales['en'] = {
+﻿Locales['en'] = {
   ['shop'] = 'فروشگاه',
   ['shops'] = 'فروشگاه ها',
-  ['press_menu'] = 'press ~INPUT_CONTEXT~ to access the ~y~store~s~.',
+  ['press_menu'] = 'برای دسترسی به فروشگاه، دکمه E را فشار دهید.',
   ['shop_item'] = '$%s',
-  ['bought'] = 'you just bought ~y~%sx~s~ ~b~%s~s~ for ~r~$%s~s~',
-  ['not_enough'] = 'you do not have ~r~enough~s~ money, you\'re ~y~missing~s~ ~r~$%s~s~!',
-  ['player_cannot_hold'] = 'you do ~r~not~s~ have enough ~y~free space~s~ in your inventory!',
+  ['bought'] = 'شما %sx %s را به مبلغ $%s خرید کردید',
+  ['not_enough'] = 'شما پول کافی ندارید! پول مورد نیاز برای خرید: $%s',
+  ['player_cannot_hold'] = 'جیب های شما پر است!',
   ['shop_confirm'] = 'buy %sx %s for $%s?',
   ['no'] = 'خیر',
   ['yes'] = 'بله',
