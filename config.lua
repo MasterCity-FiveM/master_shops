@@ -30,7 +30,16 @@ Config.Map = {
   {name="Shop",color=2, id=52,x =-707.501, y =-914.260, z =18.215},
   {name="Shop",color=2, id=52,x =-1820.523, y =792.518, z =137.118},
   {name="Shop",color=2, id=52,x =1698.388, y =4924.404, z =41.063},
-  {name="Digital Shop",color=37, id=521,x =-657.5472, y =-857.0374, z =24.49451}
+  {name="Digital Shop",color=37, id=521,x =-657.5472, y =-857.0374, z =24.49451},
+  {name="Gun Shop",color=1, id=150,x =-662.1, y =-935.3, z = 20.8},
+  {name="Gun Shop",color=1, id=150,x =810.2, y =-2157.3, z = 28.6},
+  {name="Gun Shop",color=1, id=150,x =1693.4, y =3759.5, z = 33.7},
+  {name="Gun Shop",color=1, id=150,x =-330.2, y =6083.8, z = 30.4},
+  {name="Gun Shop",color=1, id=150,x =252.3, y =-50.0, z = 68.9},
+  {name="Gun Shop",color=1, id=150,x =22.0, y =-1107.2, z =  28.8},
+  {name="Gun Shop",color=1, id=150,x =2567.6, y =294.3, z = 107.7},
+  {name="Gun Shop",color=1, id=150,x =-1117.5, y =2698.6, z = 17.5},
+  {name="Gun Shop",color=1, id=150,x =842.4, y =-1033.4, z = 27.1},
 }
 
 Config.Zones = {
@@ -94,6 +103,21 @@ Config.Zones = {
         Items = {phone},
         Pos = {
             {x = -657.5472,   y = -857.0374, z = 23.49451}
+        }
+    },
+	
+    GunShop = {
+        Items = {},
+        Pos = {
+		  {x =-662.1, y =-935.3, z = 20.8},
+		  {x =810.2, y =-2157.3, z = 28.6},
+		  {x =1693.4, y =3759.5, z = 33.7},
+		  {x =-330.2, y =6083.8, z = 30.4},
+		  {x =252.3, y =-50.0, z = 68.9},
+		  {x =22.0, y =-1107.2, z =  28.8},
+		  {x =2567.6, y =294.3, z = 107.7},
+		  {x =-1117.5, y =2698.6, z = 17.5},
+		  {x =842.4, y =-1033.4, z = 27.1},
         }
     }
 }

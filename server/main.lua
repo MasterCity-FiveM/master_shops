@@ -8,7 +8,7 @@ ESX.RegisterServerCallback('esx_shop:requestDBItems', function(source, cb, zone)
 		cb(ZoneItems[zone])
 	else
 		MySQL.Async.fetchAll(
-			'SELECT shops.item as sname, shops.price as price, items.label as itemname, items.limit as maxamount, items.label_fa as label_fa FROM shops LEFT JOIN items ON items.name = shops.item WHERE shops.name = @zone',
+			'SELECT shops.item as sname, shops.price as price, shops.item_type as item_type, items.label as itemname, items.limit as maxamount, items.label_fa as label_fa FROM shops LEFT JOIN items ON items.name = shops.item WHERE shops.name = @zone',
 			{
 				['@zone'] = zone
 			},
@@ -23,6 +23,7 @@ ESX.RegisterServerCallback('esx_shop:requestDBItems', function(source, cb, zone)
 					shopItems[i].price = result[i].price
 					shopItems[i].label = result[i].itemname
 					shopItems[i].maxamount = result[i].maxamount
+					shopItems[i].item_type = result[i].item_type
 					
 					if result[i].label_fa then
 						shopItems[i].label_fa = result[i].label_fa
@@ -68,6 +69,7 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 
 	-- get price
 	local price = 0
+	local item_type = 'item'
 	local itemLabel = ''
 	local maxamount = 1
 	
@@ -76,6 +78,7 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 			price = ZoneItems[zone][i].price
 			itemLabel = ZoneItems[zone][i].label
 			maxamount = ZoneItems[zone][i].maxamount
+			item_type =  ZoneItems[zone][i].item_type
 			break
 		end
 	end
@@ -97,7 +100,11 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 		-- can the player carry the said amount of x item?
 		if xPlayer.canCarryItem(itemName, amount) then
 			xPlayer.removeMoney(price)
-			xPlayer.addInventoryItem(itemName, amount)
+			if item_type == 'weapon' then
+				xPlayer.addWeapon(itemName, amount)
+			else
+				xPlayer.addInventoryItem(itemName, amount)
+			end
 
 			TriggerClientEvent("pNotify:SendNotification", _source, { text = "از خرید شما متشکریم، باز هم به ما سر بزنید.", type = "success", timeout = 5000, layout = "bottomCenter"})
 		else
