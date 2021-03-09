@@ -41,6 +41,7 @@ Config.Map = {
   {name="Gun Shop",color=1, id=150,x =2567.6, y =294.3, z = 107.7},
   {name="Gun Shop",color=1, id=150,x =-1117.5, y =2698.6, z = 17.5},
   {name="Gun Shop",color=1, id=150,x =842.4, y =-1033.4, z = 27.1},
+  {name="Prison Shop",color=1, id=151,x =658.5494, y =129.4, z = 80.1},
 }
 
 Config.Zones = {
@@ -121,7 +122,14 @@ Config.Zones = {
 		  {x =-1117.5, y =2698.6, z = 17.5},
 		  {x =842.4, y =-1033.4, z = 27.1},
         }
-    }
+    },
+	
+	PrisonShop = {
+		Items = {bread, water},
+		Pos = {
+			{x = 658.5494, y = 129.033, z = 79.82229}
+		}
+	}
 }
 
 
