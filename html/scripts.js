@@ -34,7 +34,7 @@ window.addEventListener('message', function (event) {
 	if (item.message == "add"){
 		$( ".home" ).append('<div class="card">' +
 					'<div class="image-holder">' +
-						'<img src="nui://DP_Inventory/html/img/items/' + item.name + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' + 
+						'<img src="nui://Master_Inventory/html/img/items/' + item.name + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' + 
 					'</div>' +
 					'<div class="container">' + 
 						'<h4><b>' + item.label_fa + '</b></h4> ' +
