@@ -129,6 +129,13 @@ Config.Zones = {
 		Pos = {
 			{x = 658.5494, y = 129.033, z = 79.82229}
 		}
+	},
+	
+	MineShop = {
+		Items = {sandis, pampam, Pickaxe1, Pickaxe2, Pickaxe3},
+		Pos = {
+			{x = -600.9495, y = 2088.673, z = 131.4692}
+		}
 	}
 }
 
