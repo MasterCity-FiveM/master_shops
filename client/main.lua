@@ -177,6 +177,8 @@ end)
 RegisterNetEvent('master_keymap:e')
 AddEventHandler('master_keymap:e', function() 
 	if CurrentAction ~= nil then
+		TriggerEvent("masterking32:closeAllUI")
+		Citizen.Wait(100)
 		OpenShopMenu(CurrentActionData.zone)
 		CurrentAction = nil
 	end
@@ -189,6 +191,11 @@ AddEventHandler('master_keymap:q', function()
 			closeGui()
 		end)
 	end
+end)
+
+RegisterNetEvent('masterking32:closeAllUI')
+AddEventHandler('masterking32:closeAllUI', function() 
+	closeGui()
 end)
 
 function closeGui()
