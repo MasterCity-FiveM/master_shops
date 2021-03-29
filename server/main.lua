@@ -4,6 +4,7 @@ local ZoneItems = {}
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 ESX.RegisterServerCallback('esx_shop:requestDBItems', function(source, cb, zone)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_shop:requestDBItems', {zone = zone})
 	if ZoneItems[zone] ~= nil then
 		cb(ZoneItems[zone])
 	else
@@ -56,6 +57,7 @@ end
 
 RegisterServerEvent('esx_shops:buyItem')
 AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_shops:buyItem', {itemName = itemName, amount = amount, zone = zone})
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
