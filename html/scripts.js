@@ -11,7 +11,7 @@ function closeAll() {
 	$(".body").css("display", "none");
 }
 $(".close").click(function(){
-    $.post('http://esx_shops/quit', JSON.stringify({}));
+    $.post('http://master_shops/quit', JSON.stringify({}));
 });
 // Listen for NUI Events
 window.addEventListener('message', function (event) {
@@ -66,7 +66,7 @@ $(".home").on("click", ".buy", function() {
 	var btnQuan = $(this);
 	var itemName = btnQuan.attr('name')
 	var ItemCount = parseFloat(btnQuan.parent().parent().find(".amount_buy").val());
-	$.post('http://esx_shops/purchase', JSON.stringify({
+	$.post('http://master_shops/purchase', JSON.stringify({
 		item: itemName,
 		count: ItemCount,
 		loc: zone
