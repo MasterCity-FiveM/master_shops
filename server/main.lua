@@ -88,6 +88,10 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 	local AmountInBag = GetItemCount(_source, itemName)
 	local AmountInBagAfterBuy = AmountInBag + amount
 	
+	if AmountInBag == nil then
+		AmountInBag = 0
+	end
+	
 	if AmountInBag >= maxamount then
 		TriggerClientEvent("pNotify:SendNotification", _source, { text = "شما حداکثر تعداد قابل حمل این محصول را دارید.", type = "error", timeout = 5000, layout = "bottomCenter"})
 		return
