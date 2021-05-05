@@ -107,7 +107,7 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 		if xPlayer.canCarryItem(itemName, amount) then
 			xPlayer.removeMoney(price)
 			if item_type == 'weapon' then
-				xPlayer.addWeapon(itemName, amount)
+				xPlayer.addWeapon(itemName:upper(), amount)
 			else
 				xPlayer.addInventoryItem(itemName, amount)
 			end
