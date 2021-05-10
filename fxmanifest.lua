@@ -6,14 +6,20 @@ description 'MasterkinG32 Shops'
 
 version '1.0.0'
 
-ui_page 'html/index.html'
+ui_page 'html/ui.html'
 
 client_scripts {
+	'@es_extended/locale.lua',
 	'config.lua',
+	'locales/en.lua',
 	'client/*.lua'
 }
 server_scripts {
-	'server/server.lua'
+	'@es_extended/locale.lua',
+	'@mysql-async/lib/MySQL.lua',
+	'locales/en.lua',
+	'config.lua',
+	'server/main.lua'
 }
 
 files {
