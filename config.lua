@@ -43,6 +43,7 @@ Config.Map = {
   {name="Gun Shop",color=1, id=150,x =-1117.5, y =2698.6, z = 17.5},
   {name="Gun Shop",color=1, id=150,x =842.4, y =-1033.4, z = 27.1},
   {name="Prison Shop",color=1, id=151,x =658.5494, y =129.4, z = 80.1},
+  {name="Kapanese Restaurant",color=1, id=197,x= -162.26373291016, y=276.34286499023, z= 93.528198242188},
 }
 
 Config.Zones = {
@@ -137,6 +138,13 @@ Config.Zones = {
 		Items = {sandis, pampam, Pickaxe1, Pickaxe2, Pickaxe3},
 		Pos = {
 			{x = -600.9495, y = 2088.673, z = 131.4692}
+		}
+	},
+	
+	Japanese = {
+		Items = {NormalSushi, SpecialSushi, PandaSushi, Meygoo, SpecialMeygoo},
+		Pos = {
+			{x = -169.84614562988, y =295.0813293457, z = 93.747314453125}
 		}
 	}
 }
