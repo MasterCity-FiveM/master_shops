@@ -44,21 +44,11 @@ function OpenFinalShopMenu(zone) -- If you don't want the ESX_SuperMarket featur
 		clear = true
 	})
 	
-	local elements = {}
-	for i=1, #Config.Zones[zone].Items, 1 do
-		local item = Config.Zones[zone].Items[i]
-
-		SendNUIMessage({
-			message		= "add",
-			name		= item.name,
-			label      	= item.label,
-			label_fa  	= item.label_fa,
-			price      	= item.price,
-			maxcount  	= item.maxamount,
-			loc		= zone
-		})
-
-	end
+	SendNUIMessage({
+		message	= "add",
+		loc = zone,
+		item = Config.Zones[zone].Items
+	})
 	
 	ESX.SetTimeout(200, function()
 		SetNuiFocus(true, true)
@@ -131,6 +121,31 @@ Citizen.CreateThread(function()
 		EndTextCommandSetBlipName(blip)
 	end
 end)
+
+Citizen.CreateThread(function()
+    for i = 1, #Config.ShopPeds do 
+        _CreatePed(GetHashKey(Config.ShopPeds[i].ped), Config.ShopPeds[i].coords, Config.ShopPeds[i].heading)
+    end
+end)
+
+function _CreatePed(hash, coords, heading)
+    RequestModel(hash)
+    while not HasModelLoaded(hash) do
+        Wait(5)
+    end
+
+    local ped = CreatePed(4, hash, coords, false, false)
+    SetEntityHeading(ped, heading)
+    SetEntityAsMissionEntity(ped, true, true)
+    SetPedHearingRange(ped, 0.0)
+    SetPedSeeingRange(ped, 0.0)
+    SetPedAlertness(ped, 0.0)
+    SetPedFleeAttributes(ped, 0, 0)
+    SetBlockingOfNonTemporaryEvents(ped, true)
+    SetPedCombatAttributes(ped, 46, true)
+    SetPedFleeAttributes(ped, 0, 0)
+    return ped
+end
 
 -- Enter / Exit marker events
 Citizen.CreateThread(function()

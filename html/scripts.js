@@ -1,5 +1,15 @@
 var zone = null
 
+var Config = new Object();
+Config.closeKeys = [112, 113, 114, 27, 115, 120, 121]; 
+$(document).ready(function () {
+	$("body").on("keyup", function (key) {
+		if (Config.closeKeys.includes(key.which)) {
+			$.post("http://master_shops/quit", JSON.stringify({}));
+		}
+	});
+});
+
 // Partial Functions
 function closeMain() {
 	$("body").css("display", "none");
@@ -32,22 +42,31 @@ window.addEventListener('message', function (event) {
 	}
 	
 	if (item.message == "add"){
-		$( ".home" ).append('<div class="card">' +
-					'<div class="image-holder">' +
-						'<img src="nui://Master_Inventory/html/img/items/' + item.name + '.png" onerror="this.src = \'img/default.png\'" alt="' + item.label + '" style="width:100%">' + 
-					'</div>' +
-					'<div class="container">' + 
-						'<h4><b>' + item.label_fa + '</b></h4> ' +
-						'<div class="price" data-price="' + item.price + '" data-maxamount="' + item.maxcount + '">' + item.price + '$' + '</div>' +
-						'<div class="quantity">' + 
-							'<input name="number" type="range" min="1" max="' + item.maxcount + '" class="amount_buy">' +
-						'</div>' +
-						'<div class="purchase">' + 
-							'<div class="buy" name="' + item.name + '">خرید 1 عدد</div>' + 
-						'</div>' +
-					'</div>' +
-				'</div>');
-		
+		html_out = "";
+		$( ".home" ).empty();
+		for (const val of item.item) { 
+			html_out = html_out + '<div class="card">' +
+				'<div class="image-holder">' +
+					'<img src="nui://Master_Inventory/html/img/items/' + val.name + '.png" onerror="this.src = \'img/default.png\'" alt="' + val.label + '" style="width:100%">' + 
+				'</div><div class="container"><h4><b>' + val.label_fa + '</b></h4> ' +
+					'<div class="price" data-price="' + val.price + '" data-maxamount="' + val.maxcount + '">' + val.price + '$' + '</div>' +
+					'<div class="quantity">';
+					
+			if (val.forsell == 1) {
+				html_out = html_out + '<input name="number" type="range" min="1" max="' + val.maxcount + '" class="amount_buy">';
+			} else {
+				html_out = html_out + '<input name="number" type="range" min="1" max="1" class="amount_buy">';
+			}
+			
+			html_out = html_out + '</div><div class="purchase">';
+			if (val.forsell == 1) {
+				html_out = html_out + '<div class="buy" name="' + val.name + '">خرید 1 عدد</div>';
+			} else {
+				html_out = html_out + '<div class="buy" name="' + val.name + '">فروش 1 عدد</div>';
+			}
+			html_out = html_out + '</div></div></div>';
+		}
+		$( ".home" ).html(html_out);
 		$('.amount_buy').val('1');
 		zone = item.loc;
 	}
