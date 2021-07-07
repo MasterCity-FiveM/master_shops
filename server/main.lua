@@ -118,7 +118,6 @@ AddEventHandler('esx_shops:buyItem', function(itemName, amount, zone)
 				if item_type == 'weapon' then
 					xPlayer.addWeapon(itemName:upper(), amount)
 				else
-					print(itemName)
 					xPlayer.addInventoryItem(itemName, amount)
 				end
 
