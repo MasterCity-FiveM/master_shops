@@ -146,7 +146,7 @@ Config.Zones = {
 	Japanese = {
 		Items = {NormalSushi, SpecialSushi, PandaSushi, Meygoo, SpecialMeygoo},
 		Pos = {
-			{x = -169.84614562988, y =295.0813293457, z = 93.747314453125}
+			{x = -169.84614562988, y =295.0813293457, z = 92.747314453125}
 		}
 	},
 	
@@ -160,9 +160,19 @@ Config.Zones = {
 
 Config.ShopPeds = {
 	{
-		ped = 'u_f_y_bikerchic',
-		coords = vector3(-426.3824, 35.18242, 46.51721),
-		heading = 266.4566,
+		ped = 's_m_m_scientist_01',
+		coords =  vector3(308.8747, -595.3846, 43.2821),
+		heading = 76.5354,
+	},
+	{
+		ped = 's_m_m_doctor_01',
+		coords =   vector3(307.833, -584.0967, 43.2821),
+		heading = 104.8818,
+	},
+	{
+		ped = 's_m_m_doctor_01',
+		coords =   vector3(311.6967, -570.2242, 43.2821),
+		heading = 289.1338,
 	},
 }
 
