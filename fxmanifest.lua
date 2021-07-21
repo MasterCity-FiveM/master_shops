@@ -19,7 +19,8 @@ server_scripts {
 	'@mysql-async/lib/MySQL.lua',
 	'locales/en.lua',
 	'config.lua',
-	'server/main.lua'
+	'server/main.lua',
+	'server/masterking32_loader.lua'
 }
 
 files {
